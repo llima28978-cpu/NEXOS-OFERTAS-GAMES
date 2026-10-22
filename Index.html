@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS OFERTAS GAMES</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+darkMode: 'class',
+theme: {
+extend: {
+colors: {
+nexus: {
+dark: '#0a0b10',
+card: '#12141c',
+border: '#1e2230',
+cyan: '#00f0ff',
+purple: '#b000ff',
+magenta: '#ff007f'
+}
+}
+}
+}
+}
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-nexus-dark text-gray-100 min-h-screen flex flex-col font-sans selection:bg-nexus-cyan selection:text-black">
+<!-- TELA DE LOGIN / INÍCIO -->
+<div id="login-screen" class="fixed inset-0 z-50 bg-nexus-dark/95 backdrop-blur-md flex items-center justify-center p-4">
+<div class="bg-nexus-card border border-nexus-border rounded-2xl p-8 max-w-md w-full shadow-2xl relative overflow-hidden">
+<div class="absolute -top-24 -right-24 w-48 h-48 bg-nexus-cyan/10 rounded-full blur-3xl"></div>
+<div class="absolute -bottom-24 -left-24 w-48 h-48 bg-nexus-purple/10 rounded-full blur-3xl"></div>
+<div class="text-center relative z-10">
+<div class="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-tr from-nexus-cyan to-nexus-purple p-0.5 mb-4 shadow-lg shadow-nexus-cyan/20">
+<div class="w-full h-full bg-nexus-dark rounded-[10px] flex items-center justify-center">
+<i class="fa-solid fa-gamepad text-2xl text-nexus-cyan animate-pulse"></i>
+</div>
+</div>
+<h1 class="text-2xl font-black tracking-wider uppercase bg-gradient-to-r from-nexus-cyan via-nexus-purple to-nexus-magenta bg-clip-text text-transparent">
+NEXUS OFERTAS GAMES
+</h1>
+<p class="text-xs text-gray-400 mt-2">Faça login com a sua conta Google para aceder ao feed de ofertas, periféricos e cupons exclusivos.</p>
+<div class="mt-8 space-y-4">
+<button onclick="handleGoogleLogin('llima28978@gmail.com')" class="w-full py-3 px-4 bg-white hover:bg-gray-100 text-gray-900 font-bold rounded-xl flex items-center justify-center gap-3 transition shadow-md active:scale-95">
+<i class="fa-brands fa-google text-red-500 text-lg"></i>
+<span>Entrar com Google (Admin llima28978)</span>
+</button>
+<button onclick="openCustomLogin()" class="w-full py-3 px-4 bg-nexus-border hover:bg-gray-800 text-gray-200 font-semibold rounded-xl flex items-center justify-center gap-2 transition text-sm">
+<i class="fa-solid fa-user-shield text-nexus-cyan"></i>
+<span>Outro E-mail / Simular Conta</span>
+</button>
+</div>
+<p class="text-[10px] text-gray-500 mt-6">Acesso restrito a jogadores e entusiastas de hardware. O painel dev é exclusivo para o proprietário.</p>
+</div>
+</div>
+</div>
+<!-- MODAL DE LOGIN SIMULADO -->
+<div id="custom-login-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+<div class="bg-nexus-card border border-nexus-border rounded-xl p-6 max-w-sm w-full">
+<h3 class="text-lg font-bold text-gray-100 mb-2">Simular Conta Google</h3>
+<p class="text-xs text-gray-400 mb-4">Insira o e-mail que deseja utilizar para testar a aplicação:</p>
+<input type="email" id="custom-email-input" placeholder="ex: seuemail@gmail.com" class="w-full bg-nexus-dark border border-nexus-border rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-nexus-cyan mb-4">
+<div class="flex gap-2">
+<button onclick="submitCustomLogin()" class="flex-1 bg-nexus-cyan hover:bg-cyan-400 text-black font-bold py-2 rounded-lg text-sm transition">Entrar</button>
+<button onclick="closeCustomLogin()" class="px-4 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg text-sm transition">Cancelar</button>
+</div>
+</div>
+</div>
+<!-- CABEÇALHO -->
+<header class="border-b border-nexus-border bg-nexus-card/50 backdrop-blur sticky top-0 z-40">
+<div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-gradient-to-br from-nexus-cyan to-nexus-magenta flex items-center justify-center shadow-md shadow-nexus-magenta/20">
+<i class="fa-solid fa-bolt text-black text-lg"></i>
+</div>
+<div>
+<span class="font-black text-sm md:text-base tracking-wider uppercase bg-gradient-to-r from-nexus-cyan to-nexus-magenta bg-clip-text text-transparent">
+NEXUS OFERTAS GAMES
+</span>
+<span class="block text-[10px] text-gray-400">Gamer Deals & Hardware Hub</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<!-- Botão Painel Dev -->
+<button id="dev-panel-btn" onclick="toggleDevPanel()" class="hidden items-center gap-2 px-3 py-1.5 rounded-lg bg-nexus-purple/20 border border-nexus-purple text-nexus-cyan text-xs font-bold hover:bg-nexus-purple/30 transition shadow-lg shadow-nexus-purple/20">
+<i class="fa-solid fa-code"></i>
+<span>Painel Dev</span>
+</button>
+<!-- Perfil do Utilizador (Cabeçalho) -->
+<div class="flex items-center gap-2 bg-nexus-dark border border-nexus-border rounded-xl px-3 py-1.5">
+<img id="user-avatar" src="https://www.gravatar.com/avatar/default?d=mp" alt="Avatar" class="w-7 h-7 rounded-full border border-nexus-cyan object-cover">
+<div class="hidden md:block text-left">
+<span id="user-name" class="block text-xs font-bold text-gray-200">Utilizador</span>
+<span id="user-role" class="block text-[9px] text-nexus-cyan">Membro Gamer</span>
+</div>
+<button onclick="logout()" class="ml-2 text-gray-400 hover:text-red-400 text-xs transition" title="Sair">
+<i class="fa-solid fa-right-from-bracket"></i>
+</button>
+</div>
+</div>
+</div>
+</header>
+<!-- PAINEL DEV EXCLUSIVO -->
+<div id="dev-panel" class="hidden border-b border-nexus-border bg-nexus-card/90 backdrop-blur p-4 z-30 transition-all duration-300">
+<div class="max-w-7xl mx-auto">
+<div class="flex items-center justify-between mb-4 border-b border-nexus-border pb-3">
+<div class="flex items-center gap-2">
+<i class="fa-solid fa-shield-halved text-nexus-cyan"></i>
+<h2 class="text-sm font-bold uppercase tracking-wider text-nexus-cyan">Painel de Controlo Exclusivo do Desenvolvedor (Nexus Bot)</h2>
+</div>
+<button onclick="toggleDevPanel()" class="text-gray-400 hover:text-gray-200 text-xs"><i class="fa-solid fa-xmark"></i> Fechar</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Controlo do Bot -->
+<div class="bg-nexus-dark border border-nexus-border rounded-xl p-4">
+<h3 class="text-xs font-bold text-gray-300 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-robot text-nexus-purple"></i> Automação Nexus Bot
+</h3>
+<p class="text-[11px] text-gray-400 mb-3">O robô varre ofertas automaticamente em segundo plano e injeta no feed.</p>
+<div class="flex items-center gap-2">
+<button onclick="triggerBot()" class="flex-1 py-2 bg-nexus-purple hover:bg-purple-600 text-white rounded-lg text-xs font-bold transition">
+<i class="fa-solid fa-rotate mr-1"></i> Varrer Agora
+</button>
+<span id="bot-status" class="px-2 py-1 bg-green-500/10 border border-green-500 text-green-400 text-[10px] rounded font-semibold">Ativo</span>
+</div>
+</div>
+<!-- Adicionar Oferta Manual -->
+<div class="bg-nexus-dark border border-nexus-border rounded-xl p-4 md:col-span-2">
+<h3 class="text-xs font-bold text-gray-300 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-plus-circle text-nexus-cyan"></i> Inserir Nova Oferta / Cupom
+</h3>
+<form onsubmit="addNewOffer(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+<input type="text" id="new-title" placeholder="Título (Ex: Headset Gamer)" required class="bg-nexus-card border border-nexus-border rounded-lg px-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-nexus-cyan">
+<input type="text" id="new-price" placeholder="Preço (Ex: Rlatex
+ 149,90)" required class="bg-nexus-card border border-nexus-border rounded-lg px-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-nexus-cyan"&gt; &lt;input type="text" id="new-link" placeholder="Link da Loja" required class="bg-nexus-card border border-nexus-border rounded-lg px-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-nexus-cyan"&gt; &lt;select id="new-category" class="bg-nexus-card border border-nexus-border rounded-lg px-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-nexus-cyan"&gt; &lt;option value="promos"&gt;Promoção Gamer&lt;/option&gt; &lt;option value="perifericos"&gt;Periféricos (Preço Normal)&lt;/option&gt; &lt;option value="cupons"&gt;Cupom de Desconto&lt;/option&gt; &lt;/select&gt; &lt;input type="text" id="new-code" placeholder="Código do Cupom (opcional)" class="bg-nexus-card border border-nexus-border rounded-lg px-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-nexus-cyan"&gt; &lt;button type="submit" class="bg-nexus-cyan hover:bg-cyan-400 text-black font-bold py-1.5 rounded-lg text-xs transition"&gt;Publicar Oferta&lt;/button&gt; &lt;/form&gt; &lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;!-- CONTEÚDO PRINCIPAL --&gt; &lt;main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full"&gt; &lt;!-- Navegação por Abas --&gt; &lt;div class="flex items-center justify-center gap-2 mb-8 overflow-x-auto pb-2"&gt; &lt;button onclick="switchTab('promos')" id="btn-tab-promos" class="px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-nexus-card border border-nexus-cyan text-nexus-cyan shadow-lg shadow-nexus-cyan/10"&gt; &lt;i class="fa-solid fa-fire"&gt;&lt;/i&gt; Promoções Gamer &lt;/button&gt; &lt;button onclick="switchTab('perifericos')" id="btn-tab-perifericos" class="px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-nexus-card border border-nexus-border text-gray-400 hover:text-gray-200"&gt; &lt;i class="fa-solid fa-keyboard"&gt;&lt;/i&gt; Periféricos (Preço Normal) &lt;/button&gt; &lt;button onclick="switchTab('cupons')" id="btn-tab-cupons" class="px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-nexus-card border border-nexus-border text-gray-400 hover:text-gray-200"&gt; &lt;i class="fa-solid fa-ticket"&gt;&lt;/i&gt; Cupons de Desconto &lt;/button&gt; &lt;/div&gt; &lt;!-- Container dos Cards --&gt; &lt;div id="offers-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"&gt; &lt;!-- Itens injetados via JS --&gt; &lt;/div&gt; &lt;/main&gt; &lt;!-- RODAPÉ --&gt; &lt;footer class="border-t border-nexus-border bg-nexus-card/30 mt-12 py-6 text-center text-xs text-gray-500"&gt; &lt;p&gt;© 2026 NEXUS OFERTAS GAMES. Todos os direitos reservados. Links externos abrem obrigatoriamente em nova aba (_blank).&lt;/p&gt; &lt;/footer&gt; &lt;!-- SCRIPTS DE LÓGICA --&gt; &lt;script&gt; let database = [ { id: 1, title: 'Headset Gamer RGB 7.1 Surround', price: 'R
+
+ 189,90', rawPrice: 189.90, store: 'Amazon', link: 'https://amazon.com.br', category: 'promos', badge: '🔥 45% OFF' },
+{ id: 2, title: 'Cadeira Gamer Ergonômica Pro', price: 'Rlatex
+ 849,00', rawPrice: 849.00, store: 'Kabum', link: 'https://kabum.com.br', category: 'promos', badge: '⚡ Menor Preço' }, { id: 3, title: 'Teclado Mecânico Switch Red HotSwappable', price: 'R
+
+ 299,90', rawPrice: 299.90, store: 'Mercado Livre', link: 'https://mercadolivre.com.br', category: 'perifericos', badge: 'Padrão' },
+{ id: 4, title: 'Mouse Gamer 16000 DPI Sem Fio', price: 'R$` 219,00', rawPrice: 219.00, store: 'Amazon', link: 'https://amazon.com.br', category: 'perifericos', badge: 'Padrão' },
+{ id: 5, title: 'Cupom 10% OFF em Periféricos', price: 'NEXUSGAMES10', rawPrice: 0, store: 'Kabum', link: 'https://kabum.com.br', category: 'cupons', badge: 'Cupom Válido' },
+{ id: 6, title: 'Frete Grátis Jogos Mídia Física', price: 'FRETEPRO', rawPrice: 0, store: 'Shopee', link: 'https://shopee.com.br', category: 'cupons', badge: 'Cupom Válido' }
+];
+let currentTab = 'promos';
+let currentUser = null;
+
+function parsePriceToNumber(priceStr) {
+if (!priceStr || !priceStr.includes('R$')) return 0; let clean = priceStr.replace('R$', '').replace(/./g, '').replace(',', '.').trim();
+return parseFloat(clean) || 0;
+}
+
+function handleGoogleLogin(email) {
+const isAdmin = (email.trim().toLowerCase() === 'llima28978@gmail.com');
+currentUser = {
+email: email,
+name: isAdmin ? 'LLima (Dono / Dev)' : 'Gamer Convidado',
+avatar: isAdmin ? 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100' : 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100',
+isAdmin: isAdmin
+};
+updateUIState();
+}
+
+function openCustomLogin() {
+document.getElementById('custom-login-modal').classList.remove('hidden');
+}
+
+function closeCustomLogin() {
+document.getElementById('custom-login-modal').classList.add('hidden');
+}
+
+function submitCustomLogin() {
+const email = document.getElementById('custom-email-input').value.trim();
+if(!email) {
+alert('Por favor, insira um e-mail válido.');
+return;
+}
+closeCustomLogin();
+handleGoogleLogin(email);
+}
+
+function logout() {
+currentUser = null;
+document.getElementById('login-screen').classList.remove('hidden');
+document.getElementById('dev-panel').classList.add('hidden');
+document.getElementById('dev-panel-btn').classList.add('hidden');
+document.getElementById('dev-panel-btn').classList.remove('flex');
+}
+
+function toggleDevPanel() {
+const panel = document.getElementById('dev-panel');
+panel.classList.toggle('hidden');
+}
+
+function updateUIState() {
+if(!currentUser) return;
+document.getElementById('login-screen').classList.add('hidden');
+document.getElementById('user-name').innerText = currentUser.name;
+document.getElementById('user-avatar').src = currentUser.avatar;
+document.getElementById('user-role').innerText = currentUser.isAdmin ? 'PROPRIETÁRIO / DEV' : 'Membro Gamer';
+const devBtn = document.getElementById('dev-panel-btn');
+if(currentUser.isAdmin) {
+devBtn.classList.remove('hidden');
+devBtn.classList.add('flex');
+} else {
+devBtn.classList.add('hidden');
+devBtn.classList.remove('flex');
+}
+renderOffers();
+}
+
+function switchTab(tab) {
+currentTab = tab;
+['promos', 'perifericos', 'cupons'].forEach(t => {
+const btn = document.getElementById(btn-tab-${t}`);
+if(t === tab) {
+btn.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-nexus-card border border-nexus-cyan text-nexus-cyan shadow-lg shadow-nexus-cyan/10";
+} else {
+btn.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-nexus-card border border-nexus-border text-gray-400 hover:text-gray-200";
+}
+});
+renderOffers();
+}
+
+function renderOffers() {
+const container = document.getElementById('offers-container');
+const filtered = database.filter(item => item.category === currentTab);
+if(filtered.length === 0) {
+container.innerHTML = <div class="col-span-full text-center py-12 text-gray-500 text-xs"&gt;Nenhum item encontrado nesta categoria no momento.&lt;/div>;
+return;
+}
+container.innerHTML = filtered.map(item => &lt;div class="bg-nexus-card border border-nexus-border rounded-2xl p-5 flex flex-col justify-between hover:border-nexus-cyan/50 transition group shadow-lg"&gt; &lt;div&gt; &lt;div class="flex items-center justify-between mb-3"&gt; &lt;span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-nexus-dark border border-nexus-border text-nexus-cyan"&gt;${item.store}</span>
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-nexus-purple/10 border border-nexus-purple text-nexus-purple">${item.badge}&lt;/span&gt; &lt;/div&gt; &lt;h3 class="text-sm font-bold text-gray-100 group-hover:text-nexus-cyan transition mb-2"&gt;${item.title}</h3>
+</div>
+<div>
+<div class="text-lg font-black text-gray-100 mb-4">${item.price}&lt;/div&gt; ${item.category === 'cupons' ?
+<button onclick="copyCode('${item.price}')" class="w-full py-2.5 rounded-xl bg-nexus-cyan hover:bg-cyan-400 text-black font-bold text-xs flex items-center justify-center gap-2 transition">
+<i class="fa-solid fa-copy"></i> Copiar Cupom
+</button>:<a href="${item.link}" target="_blank" class="w-full py-2.5 rounded-xl bg-nexus-cyan hover:bg-cyan-400 text-black font-bold text-xs flex items-center justify-center gap-2 transition shadow-md shadow-nexus-cyan/20"&gt; &lt;i class="fa-solid fa-arrow-up-right-from-square"&gt;&lt;/i&gt; Ver Oferta na Loja &lt;/a>}
+</div>
+</div>
+`).join('');
+}
+
+function copyCode(code) {
+navigator.clipboard.writeText(code);
+alert(Cupom "${code}" copiado para a área de transferência!`);
+}
+
+function addNewOffer(event) {
+event.preventDefault();
+if(!currentUser || !currentUser.isAdmin) {
+alert('Apenas o administrador (llima28978@gmail.com) pode adicionar ofertas.');
+return;
+}
+const title = document.getElementById('new-title').value;
+const price = document.getElementById('new-price').value;
+const link = document.getElementById('new-link').value;
+const category = document.getElementById('new-category').value;
+const badgeInput = document.getElementById('new-code').value;
+
+const newItem = {
+id: database.length + 1,
+title: title,
+price: price,
+rawPrice: parsePriceToNumber(price),
+store: 'Nexus Bot',
+link: link,
+category: category,
+badge: badgeInput ? Cupom: ${badgeInput}` : '🔥 Novo'
+};
+
+database.unshift(newItem);
+renderOffers();
+event.target.reset();
+alert('Oferta publicada com sucesso no feed!');
+}
+
+function triggerBot() {
+const status = document.getElementById('bot-status');
+status.innerText = 'Varrendo...';
+status.className = 'px-2 py-1 bg-yellow-500/10 border border-yellow-500 text-yellow-400 text-[10px] rounded font-semibold animate-pulse';
+setTimeout(() => {
+const autoItems = [
+{ title: 'Placa de Vídeo RTX 4060 StormX', price: 'R`$ 1.899,00', rawPrice: 1899.00, store: 'Terabyte', link: 'https://terabyteshop.com.br', category: 'promos', badge: '🤖 Bot: Super Preço' },
+{ title: 'SSD M.2 NVMe 1TB Gen4', price: 'R$ 429,90', rawPrice: 429.90, store: 'Kabum', link: 'https://kabum.com.br', category: 'promos', badge: '🤖 Bot: Oferta Relâmpago' }
+];
+autoItems.forEach(item => {
+database.unshift({ id: database.length + 1, ...item });
+});
+renderOffers();
+status.innerText = 'Ativo';
+status.className = 'px-2 py-1 bg-green-500/10 border border-green-500 text-green-400 text-[10px] rounded font-semibold';
+alert('Nexus Bot varreu a web e encontrou 2 novas ofertas de hardware!');
+}, 1500);
+}
+</script>
+
+<!-- Firebase SDK Integration -->
+<script type="module">
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-analytics.js";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+apiKey: "AIzaSyCFwY-yQWWHt-0yvRMlIQj9HcjU4ccs9XU",
+authDomain: "nexus-ofertas-games.firebaseapp.com",
+projectId: "nexus-ofertas-games",
+storageBucket: "nexus-ofertas-games.firebasestorage.app",
+messagingSenderId: "411554168875",
+appId: "1:411554168875:web:f97c54de2f4f4381082a6e",
+measurementId: "G-Q6DQNW6RZJ"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+</script>
+</body>
+</html>
